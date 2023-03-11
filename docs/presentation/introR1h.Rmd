@@ -1,0 +1,35 @@
+---
+title: 'Introduction à R en une heure chrono'
+subtitle:  \vfill \includegraphics[width=.25\textwidth,height=.1\textheight]{../../template/R_logo.pdf}
+   \vfill \vfill Ateliers du PerSciF FPSE, 13 mars 2023
+author: Prof Philippe Grosjean
+institute: Université de Mons\break STAT for U \break \break \includegraphics[width=.25\textwidth,height=.1\textheight]{../../template/UMONS-logo.pdf} \break \break \url{https://web.umons.ac.be/STATforU/} \break \url{statforu@umons.ac.be}
+date: ''
+fontfamily: mathpazo
+fontsize: 9pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+SciViews::R
+```
+
+### Introduction
+
+Première dia...
+
+\center
+
+![](figures/teacher.jpg){width="60%"}
+
+-   Item 1
+
+-   Item 2
+
+### Qu'est-ce que R ?
+
+R est un logiciel pour la visualisation et l'analyse des données.
+
+\center
+
+![](figures/notes.jpg){width="40%"}
