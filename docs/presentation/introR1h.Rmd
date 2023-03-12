@@ -26,7 +26,7 @@ SciViews::R
 
 -   Développeur R depuis 30 ans, traducteur principal de R en français
 
--   Fondateur avec Kathy Huet der la plateforme d'appui en Statistique et Science des Données à l'UMONS, **STAT for U**
+-   Fondateur avec Kathy Huet de la plateforme d'appui en Statistique et Science des Données à l'UMONS, **STAT for U**
 
 ### STAT for U
 
