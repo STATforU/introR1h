@@ -18,6 +18,8 @@ SciViews::R
 
 **Qui suis-je ?**
 
+![](figures/phil-dive.png){width="50%"}
+
 -   Professeur en Faculté des Sciences, service d'Écologie numérique
 
 -   Enseigne la science des données de la Bab2 à la Ma2 au cursus de Biologie
@@ -26,29 +28,47 @@ SciViews::R
 
 -   Fondateur avec Kathy Huet der la plateforme d'appui en Statistique et Science des Données à l'UMONS, **STAT for U**
 
-**STAT for U**
+### STAT for U
 
 Conseiller, former, outiller et partager autour des statistiques et science des données
 
 Consultance pour orienter, et même depuis peu pour analyser des données (communauté UMONS et extérieur)
 
-\center
-
-![](figures/teacher.jpg){width="60%"}
-
--   Item 1
-
--   Item 2
+![](figures/statforu.png){width="80%"}
 
 ### Qu'est-ce que R ?
 
-R est un logiciel pour la visualisation et l'analyse des données.
+R (<https://www.r-project.org>) est un logiciel pour la **visualisation** et l'**analyse des données**.
 
-Puissant, Open Source, disponible pour Windows, MacOS et Linux
+Puissant, Open Source, disponible pour Windows, MacOS et Linux. Voir <https://youtu.be/XcBLEVknqvY>.
 
-\center
+![](figures/R.png){width="80%"}
 
-<https://youtu.be/XcBLEVknqvY>
+### Que peut-on analyser avec R ?
+
+**Tout !** La quasi-totalité des méthodes statistiques existantes sont disponibles dans R.
+
+Les site <https://cran.r-project.org> propose près de 20,000 packages avec des extensions pour tout faire.
+
+![](figures/CRAN.png){width="80%"}
+
+### RStudio
+
+-   RStudio permet de travailler confortablement dans R
+
+-   Il permet d'éditer des documenrs **R Markdown** compilables en différentes formes (rapports, présentations, tableaux de bord interactifs, publications scientifiques, ouvrages ...)
+
+![](figures/RStudio.png){width="80%"}
+
+## R par l'exemple
+
+### Matériel disponible
+
+Le matériel relatif à cette présentation est disponible ici :
+
+\vfill
+
+[**https://github.com/STATforU/introR1h**](https://github.com/STATforU/introR1h){.uri}
 
 ### Analyse d'un jeu de données
 
@@ -60,6 +80,8 @@ Grand sondage mondial concernant la [protection de l'environnement en 1993](http
 
 Quatre questions concernent la manière dont la science est perçue par les répondants en relation avec la protection de l'environnement :
 
+\vfill
+
 **A. Les gens croient trop souvent à la science, et pas assez aux sentiments et à la foi.**
 
 **B. En général, la science moderne fait plus de mal que de bien.**
@@ -68,11 +90,15 @@ Quatre questions concernent la manière dont la science est perçue par les rép
 
 **D. La science moderne va résoudre nos problèmes relatifs à l'environnement sans faire de grands changements à notre mode de vie.**
 
+\vfill
+
 Échelle de Likert à 5 modalités : 1 = tout à fait d'accord à 5 = pas du tout d'accord
 
 ### Variables explicatives
 
 Trois autres variables sont enregistrées :
+
+\vfill
 
 -   le **genre** (`sex`, 1 = homme, 2 = femme)
 
@@ -82,11 +108,13 @@ Trois autres variables sont enregistrées :
 
 ### Chargement des données et réencodage
 
-Données en format CSV, fichier `wg93.csv` dans le sous-dossier `data`.
+Données au format CSV, fichier `wg93.csv` dans le sous-dossier `data`.
+
+\vfill
 
 ```{r}
 wg93 <- read.csv(here::here("data", "wg93.csv"))
-str(wg93)
+knitr::kable(head(wg93))
 ```
 
 ### Réencodage des modalités pour 'sex'
@@ -94,6 +122,8 @@ str(wg93)
 -   sex =\> 1 = "H" et 2 = "F"
 
 -   Utilisation d'outils d'aide dans RStudio : **QuestionR, Levels recoding**
+
+\vfill
 
 ```{r}
 # Recoding wg93$sex
@@ -104,6 +134,8 @@ wg93$sex <- wg93$sex %>%
     "F" = "2"
   )
 ```
+
+\vfill
 
 -   Récupération de l'instruction équivalente
 
@@ -122,7 +154,12 @@ wg93 <- wg93 %>%
     edu = fct_recode(as.character(edu), "primaire" = "1", "sec. part" = "2", "secondaire" = "3",
       "univ. part" = "4", "univ. cycle 1" = "5", "univ. cycle 2" = "6")
   )
-wg93
+```
+
+### Tableau réencodé
+
+```{r}
+head(wg93, 15)
 ```
 
 ### Niveau d'éducation des répondants
@@ -131,14 +168,29 @@ wg93
 
 -   Graphique en barres horizontales.
 
+\vfill
+
 ```{r}
 # Niveau d'éducation
+# ... instructions à ajouter pour créer le graphique...
+```
 
+### Graphique obtenu
+
+```{r, echo=FALSE, out.width='80%'}
+ggplot(wg93) +
+  aes(x = edu) +
+  geom_bar(fill = "#0C4C8A") +
+  labs(x = "Education level", y = "Count") +
+  coord_flip() +
+  theme_classic()
 ```
 
 ### Question B en fonction de edu
 
 **B. En général, la science moderne fait plus de mal que de bien.**
+
+\vfill
 
 Tableau de contingence entre question B et edu avec `table()` :
 
@@ -147,32 +199,44 @@ wg93_edu <- table(wg93$B, wg93$edu)
 knitr::kable(wg93_edu)
 ```
 
-### Dependance entre question B et edu ?
+### Dépendance entre question B et edu ?
 
 Test d'indépendance du Chi^2^ avec `chisq.test()`
+
+\vfill
 
 ```{r}
 chisq.test(wg93$B, wg93$edu)
 ```
 
-*Il y a une dépendance significative au seuil* $\alpha$ de 5% entre la réponse à la question B et le niveau d'éducation.
+\vfill
+
+*Il y a une dépendance significative au seuil* $\alpha$ *de 5% entre la réponse à la question B et le niveau d'éducation.*
 
 ### Détails question B *versus* edu
 
-Une **analyse factorielle des correspondances** donne plus de détails (fonction `ca::ca()`) :
+Une **analyse factorielle des correspondances** donne plus de détails (fonction `ca()` du package {ca}) :
+
+\vfill
+
+```{r, include=FALSE}
+library(ca)
+```
 
 ```{r}
-wg93_b_edu <- ca::ca(data = wg93, ~B + edu)
+library(ca)
+wg93_b_edu <- ca(data = wg93, ~B + edu)
 summary(wg93_b_edu, rows = FALSE, columns = FALSE)
 ```
 
 ### Graphique de l'AFC - question B *versus* edu
 
 ```{r}
+par(bg = "white", mar = c(9, 4, 0, 2) + .1)
 plot(wg93_b_edu)
 ```
 
-### Détails question D *versus* edu
+### Dépendance entre question D et edu ?
 
 **D. La science moderne va résoudre nos problèmes relatifs à l'environnement sans faire de grands changements à notre mode de vie.**
 
@@ -180,36 +244,9 @@ plot(wg93_b_edu)
 chisq.test(wg93$D, wg93$edu)
 ```
 
-Pas de dépendance significative au seuil $\alpha$ de 5% entre question D et edu.
+\vfill
 
-### Analyse factorielle des correspondances ente D et edu
-
-```{r}
-wg93_d_edu <- ca::ca(data = wg93, ~D + edu)
-summary(wg93_d_edu, rows = FALSE, columns = FALSE)
-```
-
-### Visualisation graphique avec l'AFC
-
-```{r}
-plot(wg93_d_edu)
-```
-
-### Qu'en est-il sur l'ensemble des 4 questions ?
-
-Une **analyse factorielle des correspondances multiples** permet une vue globale sur les 4 questions avec `ca::mjca()` :
-
-```{r}
-wg93_ad_edu <- ca::mjca(wg93[, c("A", "B", "C", "D", "edu")], lambda = "adjusted")
-summary(wg93_ad_edu, columns = FALSE)
-```
-
-### Graphique des 4 questions
-
-```{r}
-par(mar = c(9, 4, 0, 2) + .1)
-plot(wg93_ad_edu)
-```
+*Pas de dépendance significative au seuil* $\alpha$ *de 5% entre la question D et le niveau d'éducation.*
 
 ### Écriture du manuscrit
 
@@ -221,7 +258,25 @@ plot(wg93_ad_edu)
 
 -   Template R Markdown pour ce manuscrit (cf dossier `docs/frontiers_in_psychology`)
 
--   **Analyse reproductible**
+\center
+
+![](figures/template_frontiers.png){width="50%"}
+
+\vfill
+
+**Analyse reproductible**
+
+### Analyse reproductible
+
+-   Workflow classique : on **copie-colle** depuis le logiciel de stat vers Word. **Non reproductible !**
+
+\center
+
+![](figures/workflow_not_reproducible.png){width="80%"}
+
+\vfill
+
+-   Workflow R Markdown : les instructions qui génèrent les résultats (tableaux, graphiques...) sont dans le rapport directement. **Parfaitement reproductible.** -\> Science Ouverte.
 
 ### Changement d'idée
 
@@ -229,14 +284,18 @@ plot(wg93_ad_edu)
 
 ![](figures/psychological_science.png){width="80%"}
 
--   Reformattage compet nécessaire (y compris format de bibliographie)
+-   Reformattage complet nécessaire (y compris format de bibliographie)
 
-**Pas besoin ! Il suffit juste de changer de template R Markdown** (voir dossier `docs/psychological_science`).
+**Pas besoin ! Il suffit juste de changer de template** (voir dossier `docs/psychological_science`).
 
 ### Ressources
 
-SaturnCloud
+-   **Contenu de la présentation :** <https://github.com/STATforU/introR1h>
 
--   ...
--   ...
--   ...
+-   **SaturnCloud :** <https://saturncloud.io>
+
+-   **R :** <https://www.r-project.org>
+
+-   **RStudio :** <https://posit.co/products/open-source/rstudio/>
+
+-   **STAT for U :** <https://web.umons.ac.be/statforu/>
