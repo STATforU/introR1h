@@ -16,7 +16,21 @@ SciViews::R
 
 ### Introduction
 
-Première dia...
+**Qui suis-je ?**
+
+-   Professeur en Faculté des Sciences, service d'Écologie numérique
+
+-   Enseigne la science des données de la Bab2 à la Ma2 au cursus de Biologie
+
+-   Développeur R depuis 30 ans, traducteur principal de R en français
+
+-   Fondateur avec Kathy Huet der la plateforme d'appui en Statistique et Science des Données à l'UMONS, **STAT for U**
+
+**STAT for U**
+
+Conseiller, former, outiller et partager autour des statistiques et science des données
+
+Consultance pour orienter, et même depuis peu pour analyser des données (communauté UMONS et extérieur)
 
 \center
 
@@ -30,6 +44,199 @@ Première dia...
 
 R est un logiciel pour la visualisation et l'analyse des données.
 
+Puissant, Open Source, disponible pour Windows, MacOS et Linux
+
 \center
 
-![](figures/notes.jpg){width="40%"}
+<https://youtu.be/XcBLEVknqvY>
+
+### Analyse d'un jeu de données
+
+Grand sondage mondial concernant la [protection de l'environnement en 1993](https://www.gesis.org/en/issp/modules/issp-modules-by-topic/environment/1993). Données d'Allemagne de l'Ouest.
+
+![](figures/ISPP1993.png){width="80%"}
+
+### Perception de la science
+
+Quatre questions concernent la manière dont la science est perçue par les répondants en relation avec la protection de l'environnement :
+
+**A. Les gens croient trop souvent à la science, et pas assez aux sentiments et à la foi.**
+
+**B. En général, la science moderne fait plus de mal que de bien.**
+
+**C. Tout changement dans la nature apporté par les êtres humains risque d'empirer les choses.**
+
+**D. La science moderne va résoudre nos problèmes relatifs à l'environnement sans faire de grands changements à notre mode de vie.**
+
+Échelle de Likert à 5 modalités : 1 = tout à fait d'accord à 5 = pas du tout d'accord
+
+### Variables explicatives
+
+Trois autres variables sont enregistrées :
+
+-   le **genre** (`sex`, 1 = homme, 2 = femme)
+
+-   l'**âge** (`age`, 1 = 18-24, 2 = 25-34, 3 = 35-44, 4 = 45-54, 5 = 55-64, 6 = 65+)
+
+-   le **niveau d'éducation** (`edu`, 1 = primaire, 2 = second. partim, 3 = secondaire, 4 = univ. partim, 5 = univ. cycle 1, 6 = univ. cycle 2+)
+
+### Chargement des données et réencodage
+
+Données en format CSV, fichier `wg93.csv` dans le sous-dossier `data`.
+
+```{r}
+wg93 <- read.csv(here::here("data", "wg93.csv"))
+str(wg93)
+```
+
+### Réencodage des modalités pour 'sex'
+
+-   sex =\> 1 = "H" et 2 = "F"
+
+-   Utilisation d'outils d'aide dans RStudio : **QuestionR, Levels recoding**
+
+```{r}
+# Recoding wg93$sex
+wg93$sex <- wg93$sex %>%
+  as.character() %>%
+  fct_recode(
+    "H" = "1",
+    "F" = "2"
+  )
+```
+
+-   Récupération de l'instruction équivalente
+
+### Réencodage des modalités de toutes les variables
+
+```{r}
+wg93 <- wg93 %>%
+  mutate(
+    A = fct_recode(as.character(A), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    B = fct_recode(as.character(B), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    C = fct_recode(as.character(C), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    D = fct_recode(as.character(D), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    sex = fct_recode(as.character(sex), "H" = "1", "F" = "2"),
+    age = fct_recode(as.character(age), "18-24" = "1", "25-34" = "2", "35-44" = "3",
+      "45-54" = "4", "55-64" = "5", "65+" = "6"),
+    edu = fct_recode(as.character(edu), "primaire" = "1", "sec. part" = "2", "secondaire" = "3",
+      "univ. part" = "4", "univ. cycle 1" = "5", "univ. cycle 2" = "6")
+  )
+wg93
+```
+
+### Niveau d'éducation des répondants
+
+-   Outil **Esquisse** dans RStudio.
+
+-   Graphique en barres horizontales.
+
+```{r}
+# Niveau d'éducation
+
+```
+
+### Question B en fonction de edu
+
+**B. En général, la science moderne fait plus de mal que de bien.**
+
+Tableau de contingence entre question B et edu avec `table()` :
+
+```{r}
+wg93_edu <- table(wg93$B, wg93$edu)
+knitr::kable(wg93_edu)
+```
+
+### Dependance entre question B et edu ?
+
+Test d'indépendance du Chi^2^ avec `chisq.test()`
+
+```{r}
+chisq.test(wg93$B, wg93$edu)
+```
+
+*Il y a une dépendance significative au seuil* $\alpha$ de 5% entre la réponse à la question B et le niveau d'éducation.
+
+### Détails question B *versus* edu
+
+Une **analyse factorielle des correspondances** donne plus de détails (fonction `ca::ca()`) :
+
+```{r}
+wg93_b_edu <- ca::ca(data = wg93, ~B + edu)
+summary(wg93_b_edu, rows = FALSE, columns = FALSE)
+```
+
+### Graphique de l'AFC - question B *versus* edu
+
+```{r}
+plot(wg93_b_edu)
+```
+
+### Détails question D *versus* edu
+
+**D. La science moderne va résoudre nos problèmes relatifs à l'environnement sans faire de grands changements à notre mode de vie.**
+
+```{r}
+chisq.test(wg93$D, wg93$edu)
+```
+
+Pas de dépendance significative au seuil $\alpha$ de 5% entre question D et edu.
+
+### Analyse factorielle des correspondances ente D et edu
+
+```{r}
+wg93_d_edu <- ca::ca(data = wg93, ~D + edu)
+summary(wg93_d_edu, rows = FALSE, columns = FALSE)
+```
+
+### Visualisation graphique avec l'AFC
+
+```{r}
+plot(wg93_d_edu)
+```
+
+### Qu'en est-il sur l'ensemble des 4 questions ?
+
+Une **analyse factorielle des correspondances multiples** permet une vue globale sur les 4 questions avec `ca::mjca()` :
+
+```{r}
+wg93_ad_edu <- ca::mjca(wg93[, c("A", "B", "C", "D", "edu")], lambda = "adjusted")
+summary(wg93_ad_edu, columns = FALSE)
+```
+
+### Graphique des 4 questions
+
+```{r}
+par(mar = c(9, 4, 0, 2) + .1)
+plot(wg93_ad_edu)
+```
+
+### Écriture du manuscrit
+
+-   Choix de la revue : **Frontiers in Psychology**
+
+![](figures/frontiers_in_psychology.png){width="80%"}
+
+### Formattage du manuscrit pour Frontiers in Pyschology
+
+-   Template R Markdown pour ce manuscrit (cf dossier `docs/frontiers_in_psychology`)
+
+-   **Analyse reproductible**
+
+### Changement d'idée
+
+-   On (re)soumet à la revue **Psychological Science**
+
+![](figures/psychological_science.png){width="80%"}
+
+-   Reformattage compet nécessaire (y compris format de bibliographie)
+
+**Pas besoin ! Il suffit juste de changer de template R Markdown** (voir dossier `docs/psychological_science`).
+
+### Ressources
+
+SaturnCloud
+
+-   ...
+-   ...
+-   ...
