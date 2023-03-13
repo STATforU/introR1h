@@ -1,0 +1,124 @@
+---
+title: "Perception of Science as a Mean to Protect the Environment"
+author: "Philippe Grosjean & John James"
+date: "2023-03-13"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+bibliography: bibfile.bib
+---
+
+# Abstract
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et.
+
+**Keywords:** survey, environment, science, perception, Germany
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(forcats)
+library(ggplot2)
+library(ca)
+library(xtable)
+```
+
+# Introduction
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet. Sed ut nulla arcu. Proin blandit interdum ex sit amet laoreet. Phasellus efficitur, sem hendrerit mattis dapibus, nunc tellus ornare nisi, nec eleifend enim nibh ac ipsum. Aenean tincidunt nisl sit amet facilisis faucibus. Donec odio erat, bibendum eu imperdiet sed, gravida luctus turpis. Example: [@Taylor1937], [@Knupp1999; @Kamm2000].
+
+# Material and Methods
+
+A subpopulation of 871 people from West Germany answered to the survey in 1993. We are particularly interested in their perception of science in relationship with mitigation of human impact on the environment, as in the following four questions :
+
+A. People believe too much in science and not enough to feelings and faith.
+
+B. In general, modern science is more detrimental than useful.
+
+C. Any change in nature done by human beings risks to make things worse.
+
+D. Modern science will solve our problems in relationship with the environment without big changes in our way of life.
+
+# Results
+
+```{r data_import, include=FALSE}
+wg93 <- read.csv(here::here("data", "wg93.csv"))
+wg93 <- wg93 %>%
+  mutate(
+    A = fct_recode(as.character(A), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    B = fct_recode(as.character(B), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    C = fct_recode(as.character(C), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    D = fct_recode(as.character(D), "++" = "1", "+" = "2", "0" = "3", "-" = "4", "--" = "5"),
+    sex = fct_recode(as.character(sex), "H" = "1", "F" = "2"),
+    age = fct_recode(as.character(age), "18-24" = "1", "25-34" = "2", "35-44" = "3",
+      "45-54" = "4", "55-64" = "5", "65+" = "6"),
+    edu = fct_recode(as.character(edu), "primaire" = "1", "sec. part" = "2", "secondaire" = "3",
+      "univ. part" = "4", "univ. cycle 1" = "5", "univ. cycle 2" = "6")
+  )
+wg93
+```
+
+```{r fig_edu, echo=FALSE, fig.cap="Distribution of respondants according to their education levels\\label{fig:edu}.", out.width='100%'}
+ggplot(wg93) +
+  aes(x = edu) +
+  geom_bar(fill = "#0C4C8A") +
+  labs(x = "Education level", y = "Count") +
+  coord_flip() +
+  theme_classic()
+```
+
+Figure \ref{fig:edu} presents the distribution of the sampled population according to its education level. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet.
+
+## Question B and education
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet. Sed ut nulla arcu. Proin blandit interdum ex sit amet laoreet. Phasellus efficitur, sem hendrerit mattis dapibus, nunc tellus ornare nisi, nec eleifend enim nibh ac ipsum. Aenean tincidunt nisl sit amet facilisis faucibus. Donec odio erat, bibendum eu imperdiet sed, gravida luctus turpis.
+
+```{r tab_b_edu, echo=FALSE, results = "asis"}
+wg93_edu <- table(wg93$B, wg93$edu)
+knitr::kable(wg93_edu,
+  caption = "Repartition of answers to question B according to education level.",
+  label = "tab:b_edu")
+```
+
+Table \ref{tab:b_edu} details the repartition of answers for question B on whether science is more detrimental than benefic.
+
+```{r chi2_b_edu, include=FALSE}
+(chi_b_edu <- chisq.test(wg93$B, wg93$edu))
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet. Sed ut nulla arcu. Proin blandit interdum ex sit amet laoreet. Phasellus efficitur, sem hendrerit mattis dapibus, nunc tellus ornare nisi, nec eleifend enim nibh ac ipsum. Aenean tincidunt nisl sit amet facilisis faucibus. Donec odio erat, bibendum eu imperdiet sed, gravida luctus turpis.
+
+A significant dependency between the answers to question B and the level of education was found at $\alpha$ level of 5% ($\chi^2$ test of independence, $\chi^2_{obs}$ = `r round(chi_b_edu$statistic, 2)`, df = `r chi_b_edu$parameter`, *p*-value = `r round(chi_b_edu$p.value, 4)`). The biplot for the first plane of a correspondance analysis (Fig. \ref{fig:b_edu}) shows that the lower the education, the more respondant agree with question B
+
+```{r ca_b_edu, include=FALSE}
+wg93_b_edu <- ca(data = wg93, ~B + edu)
+#summary(wg93_b_edu, rows = FALSE, columns = FALSE)
+```
+
+```{r fig_b_edu, echo=FALSE, fig.cap="First plane of the correspondence analysis between answers to question B and education level\\label{fig:b_edu}.", out.width='100%'}
+plot(wg93_b_edu)
+```
+
+## Question D and education
+
+```{r chi2_d_edu, include=FALSE}
+(chi_d_edu <- chisq.test(wg93$D, wg93$edu))
+```
+
+Question D is more ambiguous (Science will solve environment problems without changing our way of life), and the answers are less clear. There is no significant dependency at level $\alpha$ = 5% between answers to question D and education level ($\chi^2$ test of independence, $\chi^2_{obs}$ = `r round(chi_d_edu$statistic, 2)`, df = `r chi_d_edu$parameter`, *p*-value = `r round(chi_d_edu$p.value, 4)`).
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet. Sed ut nulla arcu. Proin blandit interdum ex sit amet laoreet. Phasellus efficitur, sem hendrerit mattis dapibus, nunc tellus ornare nisi, nec eleifend enim nibh ac ipsum. Aenean tincidunt nisl sit amet facilisis faucibus. Donec odio erat, bibendum eu imperdiet sed, gravida luctus turpis.
+
+# Discussion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut elit odio. Donec fermentum tellus neque, vitae fringilla orci pretium vitae. Fusce maximus finibus facilisis. Donec ut ullamcorper turpis. Donec ut porta ipsum. Nullam cursus mauris a sapien ornare pulvinar. Aenean malesuada molestie erat quis mattis. Praesent scelerisque posuere faucibus. Praesent nunc nulla, ullamcorper ut ullamcorper sed, molestie ut est. Donec consequat libero nisi, non semper velit vulputate et. Quisque eleifend tincidunt ligula, bibendum finibus massa cursus eget. Curabitur aliquet vehicula quam non pulvinar. Aliquam facilisis tortor nec purus finibus, sit amet elementum eros sodales. Ut porta porttitor vestibulum. Integer molestie, leo ut maximus aliquam, velit dui iaculis nibh, eget hendrerit purus risus sit amet dolor. Sed sed tincidunt ex. Curabitur imperdiet egestas tellus in iaculis. Maecenas ante neque, pretium vel nisl at, lobortis lacinia neque. In gravida elit vel volutpat imperdiet. Sed ut nulla arcu. Proin blandit interdum ex sit amet laoreet. Phasellus efficitur, sem hendrerit mattis dapibus, nunc tellus ornare nisi, nec eleifend enim nibh ac ipsum. Aenean tincidunt nisl sit amet facilisis faucibus. Donec odio erat, bibendum eu imperdiet sed, gravida luctus turpis.
+
+# Author Contributions
+
+Each author would like that the others have contributed more to this manuscript!
+
+# Acknowledgments
+
+The authors wish to thank the PerSciF FPSE UMONS for the opportunity to submit these results.
+
+# References {.unnumbered}
